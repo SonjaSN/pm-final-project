@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StreamLine Spotlight · Roadmap</title>
+<style>
+:root{
+  --bg:#F3F5F8; --surface:#FFFFFF; --ink:#12213A; --ink2:#4A5870; --ink3:#7A8699;
+  --line:#DCE1E9; --line2:#C5CCD8; --accent:#1F4FD8;
+  --qw-bg:#DDF3E6; --qw-fg:#12663A; --qw-bd:#4DB27D;
+  --mp-bg:#DDE8FB; --mp-fg:#1A3F9C; --mp-bd:#5C86E0;
+  --fi-bg:#FBEFCB; --fi-fg:#7A5300; --fi-bd:#D9A62E;
+  --ts-bg:#FADFDD; --ts-fg:#8E2420; --ts-bd:#DE6A66;
+  --radius:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0E1626; --surface:#17223A; --ink:#E8EDF7; --ink2:#AAB6CC; --ink3:#7E8CA6;
+    --line:#2A3752; --line2:#3A4A6B; --accent:#7FA2FF;
+    --qw-bg:#15382A; --qw-fg:#A6E7C3; --qw-bd:#3E9C6B;
+    --mp-bg:#1B2D5C; --mp-fg:#B9CEFF; --mp-bd:#5578D6;
+    --fi-bg:#3D3115; --fi-fg:#F3D589; --fi-bd:#B68A24;
+    --ts-bg:#4A1E1D; --ts-fg:#F8B9B6; --ts-bd:#C05A56;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 20px 48px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;padding-bottom:20px;border-bottom:2px solid var(--ink)}
+h1{margin:0;font-size:28px;line-height:1.15;font-weight:700;letter-spacing:-.01em}
+.sub{margin:6px 0 0;color:var(--ink2);font-size:14px}
+.team{font-size:13px;color:var(--ink2);text-align:right}
+.team strong{display:block;color:var(--ink);font-size:14px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:20px 0 22px}
+.filters .lbl{font-size:13px;color:var(--ink2);margin-right:4px}
+.chip{font:inherit;font-size:13px;padding:6px 12px;border-radius:999px;border:1px solid var(--line2);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.chip:hover{border-color:var(--ink2)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.dot.qw{background:var(--qw-bd)}.dot.mp{background:var(--mp-bd)}.dot.fi{background:var(--fi-bd)}.dot.ts{background:var(--ts-bd)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.lane{background:transparent}
+.lane-head{border-top:5px solid var(--ink);padding:10px 2px 12px}
+.lane.now .lane-head{border-color:var(--accent)}
+.lane.next .lane-head{border-color:var(--ink2)}
+.lane.later .lane-head{border-color:var(--line2)}
+.lane-head h2{margin:0;font-size:18px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline}
+.lane-head .count{font-size:13px;font-weight:400;color:var(--ink2)}
+.lane-head p{margin:2px 0 0;font-size:13px;color:var(--ink2)}
+.cards{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.card.hidden{display:none}
+.card button.top{all:unset;box-sizing:border-box;display:block;width:100%;padding:14px 14px 12px;cursor:pointer}
+.card button.top:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.row1{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.name{font-weight:700;font-size:16px;line-height:1.3}
+.badge{flex:none;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid;white-space:nowrap}
+.badge.qw{background:var(--qw-bg);color:var(--qw-fg);border-color:var(--qw-bd)}
+.badge.mp{background:var(--mp-bg);color:var(--mp-fg);border-color:var(--mp-bd)}
+.badge.fi{background:var(--fi-bg);color:var(--fi-fg);border-color:var(--fi-bd)}
+.badge.ts{background:var(--ts-bg);color:var(--ts-fg);border-color:var(--ts-bd)}
+.why{margin:8px 0 0;font-size:14px;color:var(--ink2)}
+.more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .22s ease}
+.card.open .more{grid-template-rows:1fr}
+.more>div{overflow:hidden}
+.detail{padding:0 14px 14px;border-top:1px dashed var(--line);margin-top:2px}
+.meters{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;margin:12px 0 10px;font-size:13px;color:var(--ink2)}
+.bar{display:flex;gap:4px}
+.bar i{width:22px;height:8px;border-radius:2px;background:var(--line)}
+.bar i.on{background:var(--ink)}
+.bar.effort i.on{background:var(--ink3)}
+.note{font-size:13px;color:var(--ink2);margin:6px 0 0}
+.note b{color:var(--ink);font-weight:600}
+.hint{font-size:12px;color:var(--ink3);margin-top:8px}
+.empty{display:none;font-size:13px;color:var(--ink3);padding:14px;border:1px dashed var(--line2);border-radius:var(--radius)}
+.lane.none .empty{display:block}
+.cut{margin-top:40px}
+.cut h2{font-size:18px;margin:0 0 4px}
+.cut>p{margin:0 0 14px;font-size:13px;color:var(--ink2)}
+.cutlist{display:grid;grid-template-columns:1fr;gap:14px;max-width:640px}
+.cutitem{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--ts-bd);border-radius:var(--radius);padding:14px}
+.cutitem .row1 .name{text-decoration:line-through;text-decoration-thickness:1.5px;color:var(--ink2)}
+.cutitem .why{margin-top:8px}
+.cutitem .reopen{font-size:13px;margin-top:8px;color:var(--ink)}
+.cutitem .reopen b{font-weight:600}
+footer{margin-top:32px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3)}
+@media (max-width:900px){
+  .board{grid-template-columns:1fr}
+  .cutlist{grid-template-columns:1fr}
+  .team{text-align:left}
+}
+@media (prefers-reduced-motion:reduce){.more{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>StreamLine Spotlight roadmap</h1>
+      <p class="sub">Digital instalment journey pilot. Goal: cut the 31% of journey starters who call an agent within 7 days, without raising missed payments above 19%.</p>
+    </div>
+    <div class="team"><strong>2 engineers + 1 designer</strong>3-week sprint, 4-month pilot window</div>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filter by quadrant">
+    <span class="lbl">Show</span>
+    <button class="chip" data-q="all" aria-pressed="true">All</button>
+    <button class="chip" data-q="qw" aria-pressed="false"><span class="dot qw"></span>Quick Win</button>
+    <button class="chip" data-q="mp" aria-pressed="false"><span class="dot mp"></span>Major Project</button>
+    <button class="chip" data-q="fi" aria-pressed="false"><span class="dot fi"></span>Fill-In</button>
+    <button class="chip" data-q="ts" aria-pressed="false"><span class="dot ts"></span>Time Sinker</button>
+  </div>
+
+  <main class="board">
+    <section class="lane now" aria-labelledby="h-now">
+      <div class="lane-head">
+        <h2 id="h-now">NOW <span class="count"></span></h2>
+        <p>Current 3-week sprint</p>
+      </div>
+      <div class="cards" id="now"></div>
+      <div class="empty">No cards match this filter.</div>
+    </section>
+
+    <section class="lane next" aria-labelledby="h-next">
+      <div class="lane-head">
+        <h2 id="h-next">NEXT <span class="count"></span></h2>
+        <p>Following 1 to 2 sprints</p>
+      </div>
+      <div class="cards" id="next"></div>
+      <div class="empty">No cards match this filter.</div>
+    </section>
+
+    <section class="lane later" aria-labelledby="h-later">
+      <div class="lane-head">
+        <h2 id="h-later">LATER <span class="count"></span></h2>
+        <p>Backlog, re-rank once pilot data arrives</p>
+      </div>
+      <div class="cards" id="later"></div>
+      <div class="empty">No cards match this filter.</div>
+    </section>
+  </main>
+
+  <section class="cut" aria-labelledby="h-cut">
+    <h2 id="h-cut">Cut list</h2>
+    <p>Not in the pilot plan. It can return if pilot data changes the case.</p>
+    <div class="cutlist" id="cut"></div>
+  </section>
+
+  <footer>Value and effort scores are estimates made for a larger team. Re-check effort with the 2-engineer, 1-designer capacity before committing the NOW lane, which holds three items in one 3-week sprint.</footer>
+</div>
+
+<script>
+var Q = {
+  qw:"Quick Win", mp:"Major Project", fi:"Fill-In", ts:"Time Sinker"
+};
+
+var features = [
+  {
+    lane:"now", q:"qw", v:4, e:2,
+    name:"Feature 2: \"Why we ask\" on every income question",
+    why:"It hits the exact moment Mara stalls at the income questions, and it is mostly content and UX.",
+    note:"Send copy to legal and data-protection review in week 1; that lead time is the real constraint."
+  },
+  {
+    lane:"now", q:"qw", v:4, e:2,
+    name:"Feature 6: Consequence explainer before commit",
+    why:"Fear of consequences is the trigger for her call, and plain-language answers need little engineering.",
+    note:"Covers \"what if I miss a payment?\" and \"what if my answer is wrong?\" with a visible way to adjust."
+  },
+  {
+    lane:"now", q:"fi", v:3, e:3,
+    name:"Feature 10: Outcome instrumentation",
+    why:"Without step-level drop-off and a comparison group, the 31% claim can't be proven.",
+    note:"Built first because Features 2 and 6 can't be measured without it. Track plans kept at 60 days, agent contacts, and subgroup cuts."
+  },
+  {
+    lane:"next", q:"fi", v:2, e:3,
+    name:"Feature 8: Vulnerable-consumer path and escalation",
+    why:"It works against the contact metric by design, yet it is a non-negotiable guardrail.",
+    note:"Treated as a gate: no wider rollout without it. Low-confidence and exceptional cases route to an agent."
+  },
+  {
+    lane:"next", q:"mp", v:5, e:4,
+    name:"Feature 5: Affordability guidance, not just a maximum",
+    why:"It answers \"what does affordable look like\" and protects the 19% guardrail, but needs explainable rules.",
+    note:"Highest value on the primary metric. Start with explainable rule-based ranges; Feature 3 builds on the same logic later."
+  },
+  {
+    lane:"later", q:"mp", v:4, e:4,
+    name:"Feature 3: Variable-income input",
+    why:"It fits Mara's shift pay and her ability to keep a plan, but it changes decision logic and must stay auditable.",
+    note:"Builds on the decision logic from Feature 5. Biggest capacity risk for a 2-engineer team."
+  },
+  {
+    lane:"later", q:"mp", v:4, e:4,
+    name:"Feature 4: Document guidance and quick check",
+    why:"Documents she can't find are part of her misery and tie to the 28% needing review.",
+    note:"Descope option: ship static guidance with accepted alternatives first; defer the automated file check."
+  },
+  {
+    lane:"later", q:"fi", v:3, e:3,
+    name:"Feature 9: Agent handoff summary",
+    why:"It spares Mara repeating herself once she calls, but it doesn't prevent the call.",
+    note:"Build a minimal structured summary only if capacity remains."
+  },
+  {
+    lane:"later", q:"fi", v:2, e:2,
+    name:"Feature 7: Plan confirmation and reminders",
+    why:"It sits after the agreement and does nothing for her moment of misery, but may help the 60-day guardrail.",
+    note:"Use existing letters and digital communication first. Prioritise if 60-day misses rise above baseline."
+  }
+];
+
+var cuts = [
+  {
+    q:"ts", v:3, e:4,
+    name:"Feature 1: Single view of both claims (with joint arrangement)",
+    why:"Joint arrangement needs backend and legal complexity that outweighs its effect on calls.",
+    reopen:"Reopen as a read-only view of both claims if research shows multi-claim doubt drives calls."
+  }
+];
+
+function bar(n, cls){
+  var s = '<span class="bar ' + cls + '" aria-label="' + n + ' out of 5">';
+  for (var i = 1; i <= 5; i++) s += '<i class="' + (i <= n ? 'on' : '') + '"></i>';
+  return s + '</span>';
+}
+
+function esc(t){
+  var d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+function cardHTML(f, idx){
+  return '<article class="card" data-q="' + f.q + '">' +
+    '<button class="top" aria-expanded="false" aria-controls="d' + idx + '">' +
+      '<div class="row1"><span class="name">' + esc(f.name) + '</span>' +
+      '<span class="badge ' + f.q + '">' + Q[f.q] + '</span></div>' +
+      '<p class="why">' + esc(f.why) + '</p>' +
+      '<div class="hint">Show scores and notes</div>' +
+    '</button>' +
+    '<div class="more" id="d' + idx + '"><div><div class="detail">' +
+      '<div class="meters"><span>Value</span>' + bar(f.v, 'value') + '<span>Effort</span>' + bar(f.e, 'effort') + '</div>' +
+      '<p class="note"><b>Note:</b> ' + esc(f.note) + '</p>' +
+    '</div></div></div>' +
+  '</article>';
+}
+
+function render(){
+  var lanes = {now:'', next:'', later:''};
+  features.forEach(function(f, i){ lanes[f.lane] += cardHTML(f, i); });
+  Object.keys(lanes).forEach(function(k){
+    document.getElementById(k).innerHTML = lanes[k];
+  });
+  var c = '';
+  cuts.forEach(function(x){
+    c += '<article class="cutitem" data-q="' + x.q + '">' +
+      '<div class="row1"><span class="name">' + esc(x.name) + '</span>' +
+      '<span class="badge ' + x.q + '">' + Q[x.q] + '</span></div>' +
+      '<p class="why">' + esc(x.why) + ' Value ' + x.v + ', effort ' + x.e + '.</p>' +
+      '<p class="reopen"><b>If circumstances change:</b> ' + esc(x.reopen) + '</p>' +
+    '</article>';
+  });
+  document.getElementById('cut').innerHTML = c;
+  updateCounts();
+}
+
+function updateCounts(){
+  document.querySelectorAll('.lane').forEach(function(l){
+    var all = l.querySelectorAll('.card').length;
+    var vis = l.querySelectorAll('.card:not(.hidden)').length;
+    var cnt = l.querySelector('.count');
+    cnt.textContent = vis === all ? all + ' items' : vis + ' of ' + all;
+    l.classList.toggle('none', vis === 0);
+  });
+}
+
+document.addEventListener('click', function(e){
+  var top = e.target.closest('button.top');
+  if (top){
+    var card = top.closest('.card');
+    var open = card.classList.toggle('open');
+    top.setAttribute('aria-expanded', open);
+    top.querySelector('.hint').textContent = open ? 'Hide scores and notes' : 'Show scores and notes';
+    return;
+  }
+  var chip = e.target.closest('.chip');
+  if (chip){
+    var q = chip.getAttribute('data-q');
+    document.querySelectorAll('.chip').forEach(function(c){
+      c.setAttribute('aria-pressed', c === chip ? 'true' : 'false');
+    });
+    document.querySelectorAll('.card').forEach(function(c){
+      c.classList.toggle('hidden', q !== 'all' && c.getAttribute('data-q') !== q);
+    });
+    updateCounts();
+  }
+});
+
+render();
+</script>
+</body>
+</html>

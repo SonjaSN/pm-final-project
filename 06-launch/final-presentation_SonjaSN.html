@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>&ldquo;Why we ask&rdquo; BUC Riverty Case Study · Final Project</title>
+<!-- Saans and Antarctican Mono are commercial typefaces and are not served by Google Fonts.
+     The font stacks use them when installed locally and fall back to Inter and JetBrains Mono. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07162C; --fg:#ffffff; --muted:#ffffff;
+  --orange:#fb923c; --cyan:#22d3ee; --teal:#34d399; --blue:#60a5fa; --violet:#a78bfa; --pink:#f472b6;
+  --eyebrow:#fdba74; --bd:rgba(251,146,60,.25);
+  --sans:"Saans","Inter","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  --mono:"Antarctican Mono","JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-snap-type:y proximity;scroll-behavior:smooth;background:var(--bg);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-weight:400;font-size:clamp(12px,.98vw,17px);line-height:1.45}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:6px}
+
+#bar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--orange),var(--pink));z-index:50;transition:width .12s linear}
+#dots{position:fixed;right:clamp(8px,1.4vw,22px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:50}
+#dots button{width:12px;height:12px;padding:0;border-radius:50%;border:1.5px solid var(--eyebrow);background:transparent;cursor:pointer;position:relative}
+#dots button[aria-current="true"]{background:var(--orange);border-color:var(--orange);transform:scale(1.25)}
+#dots button span{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:11px;letter-spacing:.08em;white-space:nowrap;background:#0d2342;border:1px solid var(--bd);border-radius:6px;padding:3px 8px;opacity:0;pointer-events:none}
+#dots button:hover span,#dots button:focus-visible span{opacity:1}
+
+section{min-height:100vh;scroll-snap-align:start;position:relative;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,1.8vh,20px);padding:clamp(28px,5.5vh,60px) clamp(24px,6.5vw,110px) clamp(28px,5.5vh,60px) clamp(24px,5vw,90px);overflow:hidden}
+section::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(900px 500px at 88% -5%,rgba(251,146,60,.13),transparent 60%),radial-gradient(700px 420px at -5% 105%,rgba(34,211,238,.08),transparent 60%)}
+section>*{position:relative}
+
+.eyebrow{font-family:var(--mono);font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--eyebrow);font-size:.82em;margin:0}
+h1,h2,h3{font-family:var(--sans);margin:0}
+h1{font-weight:900;font-size:clamp(34px,5.4vw,92px);line-height:1.02;letter-spacing:-.02em}
+h2{font-weight:800;font-size:clamp(22px,2.5vw,42px);line-height:1.1;letter-spacing:-.01em}
+h3{font-weight:700;font-size:1.08em}
+p{margin:0}
+.mono{font-family:var(--mono)}
+.lbl{font-family:var(--mono);font-weight:500;font-size:.78em;letter-spacing:.1em;text-transform:uppercase;margin:0 0 .45em;display:block}
+.c-o{color:var(--orange)}.c-c{color:var(--cyan)}.c-t{color:var(--teal)}.c-b{color:var(--blue)}.c-v{color:var(--violet)}.c-p{color:var(--pink)}
+
+.card{border:1px solid var(--bd);border-radius:15px;background:rgba(255,255,255,.04);padding:clamp(10px,1.5vh,18px) clamp(12px,1.2vw,20px)}
+.card.hero{background:linear-gradient(135deg,rgba(251,146,60,.20),rgba(167,139,250,.09) 70%);box-shadow:0 14px 34px rgba(0,0,0,.4)}
+.card.tint-c{border-color:rgba(34,211,238,.4);background:linear-gradient(135deg,rgba(34,211,238,.12),rgba(255,255,255,.03))}
+.card.tint-t{border-color:rgba(52,211,153,.45);background:linear-gradient(135deg,rgba(52,211,153,.13),rgba(255,255,255,.03))}
+.card.tint-p{border-color:rgba(244,114,182,.5);background:linear-gradient(135deg,rgba(244,114,182,.15),rgba(255,255,255,.03))}
+.card.tint-v{border-color:rgba(167,139,250,.45);background:linear-gradient(135deg,rgba(167,139,250,.14),rgba(255,255,255,.03))}
+.card.tint-b{border-color:rgba(96,165,250,.45);background:linear-gradient(135deg,rgba(96,165,250,.13),rgba(255,255,255,.03))}
+.card.tint-o{border-color:rgba(251,146,60,.6)}
+
+.grid{display:grid;gap:clamp(8px,1.3vw,18px)}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g6{grid-template-columns:repeat(6,minmax(0,1fr))}
+.stack{display:flex;flex-direction:column;gap:clamp(8px,1.3vw,16px)}
+
+.pill{display:inline-flex;align-items:center;gap:.5em;font-family:var(--mono);font-size:.85em;padding:.4em .9em;border-radius:999px;border:1px solid var(--bd);background:rgba(251,146,60,.10);color:#fff;text-decoration:none}
+.pill.cy{border-color:rgba(34,211,238,.45);background:rgba(34,211,238,.1)}
+.pill.te{border-color:rgba(52,211,153,.45);background:rgba(52,211,153,.1)}
+.pill.vi{border-color:rgba(167,139,250,.5);background:rgba(167,139,250,.12)}
+.btn{display:inline-flex;align-items:center;gap:.6em;background:var(--orange);color:#07162C;font-weight:800;text-decoration:none;padding:.7em 1.3em;border-radius:999px;box-shadow:0 8px 22px rgba(251,146,60,.35);width:max-content}
+.btn:hover{filter:brightness(1.08)}
+.big{font-size:1.55em;font-weight:800;line-height:1.2;letter-spacing:-.01em}
+.mid{font-size:1.15em;font-weight:700;line-height:1.3}
+.small{font-size:.88em}
+.num{font-family:var(--mono);font-weight:500;font-size:1.9em;line-height:1;color:var(--orange)}
+ol.steps{margin:0;padding-left:1.3em}
+ol.steps li,ul.tight li{margin:0 0 .3em}
+ul.tight{margin:0;padding-left:1.15em}
+hl{background:linear-gradient(transparent 62%,rgba(251,146,60,.4) 62%)}
+.hyp{font-size:1.14em;line-height:1.55}
+.hyp b{font-weight:800}
+.hyp .q{color:var(--cyan);font-weight:700}
+.hyp .n{color:var(--orange);font-weight:700}
+.hyp .o{color:var(--teal);font-weight:700}
+.hyp .g{color:var(--pink);font-weight:700}
+
+/* journey */
+.journey{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1.3vw,18px);position:relative}
+.journey::before{content:"";position:absolute;left:6%;right:6%;top:22px;height:3px;background:linear-gradient(90deg,var(--blue),var(--pink),var(--teal));opacity:.55;border-radius:2px}
+.stage{position:relative;text-align:center;padding-top:0}
+.stage .dot{width:44px;height:44px;border-radius:50%;margin:0 auto .5em;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:500;background:#0d2342;border:2px solid var(--blue);position:relative}
+.stage .box{border:1px solid var(--bd);border-radius:14px;background:rgba(255,255,255,.04);padding:.7em .8em}
+.stage.misery .dot{border-color:var(--pink);background:var(--pink);color:#07162C;box-shadow:0 0 0 6px rgba(244,114,182,.22)}
+.stage.misery .box{border-color:var(--pink);background:linear-gradient(135deg,rgba(244,114,182,.22),rgba(251,146,60,.1));box-shadow:0 12px 30px rgba(244,114,182,.18)}
+.tag{display:inline-block;font-family:var(--mono);font-size:.74em;letter-spacing:.1em;text-transform:uppercase;background:var(--pink);color:#07162C;font-weight:500;padding:.2em .7em;border-radius:999px;margin-bottom:.4em}
+
+/* cover */
+.cover{justify-content:center}
+.cover h1 .l{color:var(--orange)}
+.meta-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.thanks h1{font-size:clamp(34px,5vw,84px)}
+.cta-pill{display:inline-flex;align-items:center;gap:.7em;border:2px solid var(--orange);color:#fff;border-radius:999px;padding:.8em 1.6em;font-weight:800;font-size:1.2em;background:rgba(251,146,60,.14);width:max-content}
+.cta-pill i{width:.7em;height:.7em;border-radius:50%;background:var(--orange);display:inline-block}
+
+@media (max-width:900px){
+  .g2,.g3,.g4,.g6{grid-template-columns:1fr}
+  .journey{grid-template-columns:1fr}
+  .journey::before{display:none}
+  #dots{display:none}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}#bar{transition:none}}
+</style>
+</head>
+<body>
+<div id="bar" role="presentation"></div>
+<nav id="dots" aria-label="Slide navigation">
+  <button type="button" aria-label="Cover"><span>Cover</span></button>
+  <button type="button" aria-label="Strategy"><span>Strategy</span></button>
+  <button type="button" aria-label="Research"><span>Research</span></button>
+  <button type="button" aria-label="Blueprint"><span>Blueprint</span></button>
+  <button type="button" aria-label="Validation"><span>Validation</span></button>
+  <button type="button" aria-label="Launch"><span>Launch</span></button>
+  <button type="button" aria-label="Story"><span>Story</span></button>
+  <button type="button" aria-label="Submit"><span>Submit</span></button>
+</nav>
+
+<main>
+
+<!-- COVER -->
+<section class="cover" id="cover" aria-label="Cover">
+  <p class="eyebrow">Product School · Product Management Certification · Final Project</p>
+  <h1>&ldquo;Why we ask&rdquo; <span class="l">BUC Riverty Case Study</span></h1>
+  <div class="card hero" style="max-width:62em">
+    <span class="lbl c-o">One-line pitch</span>
+    <p class="mid">For our consumers, we will offer a guided portal journey because we are losing most starters today right at the beginning of user journey, to align our product priorities with our north-star strategic goal of 80% digital self-service Europewide.</p>
+  </div>
+  <div class="meta-row">
+    <span class="pill cy">Sonja Cohort 1 October 2026</span>
+    <a class="pill" href="https://github.com/SonjaSN/pm-final-project" target="_blank" rel="noopener">Repo · github.com/SonjaSN/pm-final-project</a>
+    <a class="btn" href="file:///C:/Users/SchauppNitscheSonja/OneDrive%20-%20Riverty%20Group%20GmbH/Dokumente/Product%20School/Prototype_Why%20we%20ask_%20income%20notes_SonjaSN.html" target="_blank" rel="noopener">View prototype</a>
+  </div>
+</section>
+
+<!-- SLIDE 5: STRATEGY -->
+<section id="strategy" aria-label="Strategy">
+  <div>
+    <p class="eyebrow">Slide 5 · Strategy</p>
+    <h2>Problem hook &amp; value proposition</h2>
+  </div>
+  <div class="card hero">
+    <span class="lbl c-o">Problem hook</span>
+    <p class="big">We must solve the rising cost &amp; weak instalment journey by addressing the user's uncertainties &amp; possibly panic situation</p>
+  </div>
+  <div class="grid g3">
+    <div class="card">
+      <span class="lbl c-p">Strategic crisis · 12 months of doing nothing</span>
+      <p>If we do nothing for 12 months, the company will have increased agent costs &amp; fall behind the strategic objective of 80% self-service</p>
+    </div>
+    <div class="card">
+      <span class="lbl c-c">Moment of misery</span>
+      <p>The user is currently forced to guess &amp; reach out to the agent to get support for the instalment</p>
+    </div>
+    <div class="card">
+      <span class="lbl c-t">Cold read</span>
+      <p>High stake risk: it touches cost (agent capacity) and strategic portfolio value (company plans that might fail). A systemic problem, not an edge case.</p>
+    </div>
+  </div>
+  <div class="card tint-c">
+    <span class="lbl c-c">Value proposition</span>
+    <p>For our consumers, we will offer a guided portal journey because we are losing most starters today right at the beginning of user journey, to align our product priorities with our north-star strategic goal of 80% digital self-service Europewide.</p>
+  </div>
+  <div class="card hero tint-o" style="border-width:2px;border-color:var(--orange)">
+    <span class="lbl c-o">Data-backed hypothesis</span>
+    <p class="hyp">Based on <span class="q">she doesn't know why they're asked, what an affordable plan looks like, whether a wrong answer or a missed payment will make things worse, or whether both claims can be handled together</span> and <span class="n">54% of started journeys not ending in an agreement; 31% of journey starters contacting an agent within 7 days; 28% of uploaded income documents needing clarification or review</span>, I believe that adding &ldquo;Why we ask&rdquo; to every income question for <b>Mara</b> will result in <span class="o">she doesn't give up and doesn't call an agent</span>, as measured by a <b>-5% change</b> in the share of journey starters who contact an agent within 7 days (baseline 31%, pilot segment against a comparison group). I will protect <span class="g">60-day plan survival: no more than 19% of new agreements missing a payment within 60 days</span> and will make a go/no-go decision after <b>4 weeks</b>.</p>
+  </div>
+</section>
+
+<!-- SLIDE 6: RESEARCH -->
+<section id="research" aria-label="Research">
+  <div>
+    <p class="eyebrow">Slide 6 · Research</p>
+    <h2>Competitive analysis &amp; journey map</h2>
+  </div>
+  <div class="grid g2" style="align-items:stretch">
+    <div class="stack">
+      <div class="card">
+        <span class="lbl c-c">Persona · workaround</span>
+        <p class="small" style="margin-bottom:.5em"><b>Mara</b>, a shift worker with two open claims and variable but stable income. Goal: agree an instalment plan she can actually afford and keep, without making her situation worse.</p>
+        <span class="lbl c-c" style="margin-top:.6em">External tools</span>
+        <p class="small">The phone (a call to the agent line) is the only external channel the brief names, plus her own phone camera or files to produce income documents.</p>
+      </div>
+      <div class="card">
+        <span class="lbl c-o">The process</span>
+        <ol class="steps small">
+          <li>Opens the portal from the reminder and starts the instalment journey.</li>
+          <li>Hits the income questions and tries to work out and document a &ldquo;typical month&rdquo; from variable shift pay (inferred).</li>
+          <li>Searches for payslips or statements she can't easily find, and uploads what she has (partly inferred; the brief says documents are hard to find).</li>
+          <li>Gives up on the portal and calls an agent.</li>
+          <li>Repeats identity, affordability and case details to the agent, and asks the questions the portal never answered, including whether both claims can be handled together.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card tint-p">
+        <span class="lbl c-p">Core frustration</span>
+        <p class="small">The moment she reaches the income and affordability questions and can't tell why they're asked, what an affordable plan looks like, or whether a wrong answer or missed payment will make things worse. Her next move is to call. The second broken moment is on the phone, when the agent has no record of what she already entered and she starts again from zero.</p>
+      </div>
+      <div class="card">
+        <span class="lbl c-t">The evidence · behavioral</span>
+        <ul class="tight small">
+          <li>Research theme: &ldquo;Consumers don't know what an affordable agreement looks like,&rdquo; &ldquo;don't understand why specific information is requested,&rdquo; and &ldquo;fear the consequences of giving a wrong answer or missing a payment.&rdquo;</li>
+          <li>Research theme: &ldquo;Agents receive too little context when a digital journey is escalated to them.&rdquo;</li>
+          <li>Baseline data: <b class="c-o">31%</b> of journey starters contact an agent within 7 days, and <b class="c-o">28%</b> of uploaded income documents need clarification or review.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div>
+    <span class="lbl c-o">Journey map</span>
+    <div class="journey" role="list">
+      <div class="stage" role="listitem"><div class="dot">1</div><div class="box"><h3>Orient</h3><p class="small">Sees both claims</p></div></div>
+      <div class="stage misery" role="listitem"><div class="dot">2</div><div class="box"><span class="tag">Moment of misery</span><h3>Explain</h3><p class="small">Enters income</p></div></div>
+      <div class="stage" role="listitem"><div class="dot">3</div><div class="box"><h3>Choose</h3><p class="small">Compares plans</p></div></div>
+      <div class="stage" role="listitem"><div class="dot">4</div><div class="box"><h3>Commit</h3><p class="small">Confirms plan</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 7: BLUEPRINT -->
+<section id="blueprint" aria-label="Blueprint">
+  <div>
+    <p class="eyebrow">Slide 7 · Blueprint</p>
+    <h2>Roadmap, PRD &amp; prototype</h2>
+  </div>
+  <div class="grid" style="grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr) minmax(0,1fr);align-items:stretch">
+    <div class="stack">
+      <div class="card tint-t">
+        <span class="lbl c-t">Now lane · this sprint</span>
+        <div class="stack" style="gap:.5em">
+          <div><b>Feature 2:</b> &ldquo;Why we ask&rdquo; on every income question <span class="pill te" style="font-size:.72em;padding:.15em .6em">Quick Win</span></div>
+          <div><b>Feature 6:</b> Consequence explainer before commit</div>
+          <div><b>Feature 10:</b> Outcome instrumentation</div>
+        </div>
+      </div>
+      <div class="card tint-p">
+        <span class="lbl c-p">Cut · the &ldquo;no&rdquo; protecting scope</span>
+        <p><b>Feature 1:</b> Single view of both claims (with joint arrangement)</p>
+      </div>
+      <div class="card">
+        <span class="lbl c-o">Feature scoped</span>
+        <p class="small">&ldquo;Why we ask&rdquo; on every income question (addresses research theme that consumers don't understand why information is requested)</p>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card tint-c">
+        <span class="lbl c-c">Must have · after overriding the AI</span>
+        <ol class="steps small">
+          <li><b>Each note answers three things: why it's needed, how the answer is used, and who can see it.</b> Dropping any one leaves part of her doubt open. &ldquo;How used&rdquo; must state plainly whether the answer feeds a recommendation, in line with the explainability guardrail.</li>
+          <li><b>The note sits inline, under the question, with no tap needed.</b> She is on a phone with little time, and a hidden note is one she won't open.</li>
+          <li><b>Readable on a small screen and reachable by screen readers.</b> A note she can't read or hear fails her.</li>
+        </ol>
+      </div>
+      <div class="card tint-v">
+        <span class="lbl c-v">Demoted to Should</span>
+        <ul class="tight small">
+          <li><b>Plain German, short, no legal wording.</b> Should, because even in Germany we're international.</li>
+          <li><b>Every claim in the note is true and signed off by legal and data-protection.</b> Should, because it would need lots of efforts getting all signs together which would make it not a quick-win anymore.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card hero">
+        <span class="lbl c-o">What my PRD makes explicit</span>
+        <p>It makes explicit that the note's content is a compliance-gated deliverable, not just interface copy.</p>
+      </div>
+      <div class="card">
+        <span class="lbl c-b">Prototype revealed a PRD gap</span>
+        <p class="small">The PRD says a field without an approved note must not render, but never says what happens to the journey then (skip, block, or route to an agent), so the prototype made the question a dead end with Continue disabled and only the agent link left, which could strand Mara on any question whose copy fails review.</p>
+      </div>
+      <a class="btn" href="file:///C:/Users/SchauppNitscheSonja/OneDrive%20-%20Riverty%20Group%20GmbH/Dokumente/Product%20School/Prototype_Why%20we%20ask_%20income%20notes_SonjaSN.html" target="_blank" rel="noopener">View prototype</a>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 8: VALIDATION -->
+<section id="validation" aria-label="Validation">
+  <div>
+    <p class="eyebrow">Slide 8 · Validation</p>
+    <h2>A/B experiment plan</h2>
+  </div>
+  <div class="card hero">
+    <span class="lbl c-o">Hypothesis</span>
+    <p class="hyp">I believe that &ldquo;Why we ask&rdquo; on every income question for <b>Mara</b> will result in <b>she doesn't give up and doesn't call an agent</b>, as measured by a <b>-5% change</b> in the share of journey starters who contact an agent within 7 days, within 4 weeks. I will protect <b>60-day plan survival</b> throughout the test.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card tint-b">
+      <span class="lbl c-b">Control (A)</span>
+      <p class="small">31% of starters contact an agent within 7 days, roughly 2,600. The research themes say consumers don't know what's affordable, don't understand why income is requested, and fear the consequences of a wrong answer or missed payment. 28% of uploaded income documents need clarification or review.</p>
+    </div>
+    <div class="card tint-v">
+      <span class="lbl c-v">Variant (B) · summary of the PRD</span>
+      <p class="small">3 screens: entry point, income and affordability questions, success / confirmation. Under each of the 4 income fields, an always-visible note with Why / How used / Who sees lines. Notes of 40 words or fewer (proposed), all copy from one content object, de-DE only, no outcome promises.</p>
+    </div>
+  </div>
+  <div class="grid g6">
+    <div class="card"><span class="lbl c-c">Primary metric</span><p class="small">Share of journey starters contacting an agent within 7 days</p></div>
+    <div class="card"><span class="lbl c-c">Baseline</span><span class="num">31%</span></div>
+    <div class="card"><span class="lbl c-c">MDE</span><span class="num">-5%</span></div>
+    <div class="card"><span class="lbl c-c">Sample / arm</span><span class="num">2,796</span></div>
+    <div class="card"><span class="lbl c-c">Split · duration</span><span class="num" style="font-size:1.4em">50/50 · 4 wk</span></div>
+    <div class="card"><span class="lbl c-c">Significance</span><span class="num">0.05</span></div>
+  </div>
+  <div class="card tint-p">
+    <span class="lbl c-p">Guardrail</span>
+    <p class="small"><b>60-day plan survival:</b> no more than 19% of new agreements missing a payment within 60 days (baseline), so a higher completion rate can't come from plans people can't keep. Must not fall below 81%. Today, 19% miss a payment. No room below that baseline.</p>
+  </div>
+  <div class="grid g3">
+    <div class="card tint-t"><span class="lbl c-t">Ship</span><p class="small">If the primary metric improves by at least -5% at 0.05 and 60-day plan survival does not fall below 81%, after 4 weeks.</p></div>
+    <div class="card tint-o"><span class="lbl c-o">Iterate</span><p class="small">If direction is positive but lift is below the MDE.</p></div>
+    <div class="card tint-p"><span class="lbl c-p">Kill</span><p class="small">If the primary metric shows no improvement or moves negatively.</p></div>
+  </div>
+  <p class="small mono" style="color:#fff">The read date is fixed at the end of 4 weeks. No results reviewed before this date.</p>
+</section>
+
+<!-- SLIDE 9: LAUNCH -->
+<section id="launch" aria-label="Launch">
+  <div>
+    <p class="eyebrow">Slide 9 · Launch</p>
+    <h2>GTM launch plan</h2>
+  </div>
+  <div class="grid g3" style="align-items:stretch">
+    <div class="stack">
+      <div class="card">
+        <span class="lbl c-o">Goal</span>
+        <p class="small"><b>Engagement.</b> Encourage the users to add the information we ask for.</p>
+        <span class="lbl c-o" style="margin-top:.8em">Audience</span>
+        <p class="small"><b>Mara</b>, a shift worker with two open claims and variable but stable income. Goal: agree an instalment plan she can actually afford and keep, without making her situation worse.</p>
+        <span class="lbl c-o" style="margin-top:.8em">Launch tier</span>
+        <p class="small"><span class="pill vi" style="font-size:.85em">S · Minimal</span> We're only adjusting content in an already existing feature.</p>
+      </div>
+      <div class="card">
+        <span class="lbl c-c">Channels</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span class="pill cy">Owned: Consumer Portal</span>
+          <span class="pill cy">Owned: E-Mail with deeplink to the Portal</span>
+          <span class="pill cy">Owned: Letter</span>
+        </div>
+        <span class="lbl c-c" style="margin-top:.8em">Enablement &amp; assets</span>
+        <p class="small">Short demo of how to set up an instalment that matches your income or add info in any of the existing FAQs.</p>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card">
+        <span class="lbl c-t">Ownership &amp; budget</span>
+        <ul class="tight small">
+          <li>Plan step, sentence, and rule: the product manager of this PRD, one person.</li>
+          <li>Build in the portal: one engineering lead, one person.</li>
+          <li>One-pager for the call: one person in collections who briefs Daniel. The case study names no individuals.</li>
+          <li>No media spend. The extra cost is the briefing and the measurement of the call within 7 days and the keep rate at 60 days. Neither is visible today.</li>
+          <li>Do not build: paid campaigns, influencers, a model, an image check, reminders, or a launch outside the Germany pilot.</li>
+        </ul>
+      </div>
+      <div class="card tint-t">
+        <span class="lbl c-t">Timeline</span>
+        <ul class="tight small">
+          <li><b>Phase 1, beta:</b> 50/50 in the one segment, 14 days of enrollment plus 7 days of follow-up. Do not ship on day 21.</li>
+          <li><b>Phase 2, launch:</b> only once, 60 days after agreement, the keep rate in the variant is at least 81% and the call rate has fallen by at least 5 percentage points below 31%. Then in the portal only, for this segment.</li>
+          <li><b>Phase 3, after launch:</b> keep reading the keep rate, with the one-pager in use. No further market while the 81% holds.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card hero">
+        <span class="lbl c-o">Success metrics</span>
+        <div class="stack" style="gap:.7em">
+          <div><p class="small"><b>Share of starters who contact an agent within 7 days.</b></p><p class="small c-p">Warning sign: the rate falls and the 60-day keep rate drops below 81%.</p></div>
+          <div><p class="small"><b>Share who see the comfortable instalment and the sentence before they confirm.</b></p><p class="small c-p">Warning sign: confirmations rise while the sentence was not shown.</p></div>
+          <div><p class="small"><b>Share of new agreements kept through 60 days, floor 81%.</b></p><p class="small c-p">Warning sign: the miss rate rises above 19%.</p></div>
+        </div>
+      </div>
+      <div class="card tint-p" style="border-width:2px">
+        <span class="lbl c-p">Bad signal to watch for</span>
+        <p class="small">Many people see the instalment, and the call rate stays at 31%. Or calls fall and the 60-day miss rate rises. Then she agreed without being able to keep the instalment.</p>
+      </div>
+      <div class="card">
+        <span class="lbl c-b">Likely post-launch decision</span>
+        <p class="small"><b>Repeat.</b> Trigger: the call rate falls by less than 5 percentage points, or it falls and the keep rate is below 81%. <b>Double</b> only if both are true: at least 5 percentage points fewer calls and a keep rate of at least 81%. <b>Lower the priority</b> if the call rate does not fall or it rises.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 10: STORY -->
+<section id="story" aria-label="Story">
+  <div>
+    <p class="eyebrow">Slide 10 · Story</p>
+    <h2>Friction, aha &amp; what's next</h2>
+  </div>
+  <div class="grid g2" style="align-items:stretch">
+    <div class="stack">
+      <div class="card tint-p">
+        <span class="lbl c-p">Friction point</span>
+        <p>The PRD says a field without an approved note must not render, but never says what happens to the journey then (skip, block, or route to an agent). The prototype exposed that dead end for Mara.</p>
+      </div>
+      <div class="card hero">
+        <span class="lbl c-o">Aha moment</span>
+        <p class="big">That we could take such a simple measure to potentially improve the user's journey</p>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card tint-c">
+        <span class="lbl c-c">Key takeaway</span>
+        <p>The note's content is a compliance-gated deliverable, not just interface copy.</p>
+      </div>
+      <div class="card tint-t">
+        <span class="lbl c-t">What I would do next</span>
+        <p class="big">Feature 6: Consequence explainer before commit</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THANK YOU / SUBMIT -->
+<section class="thanks" id="submit" aria-label="Thank you and submit">
+  <p class="eyebrow">Thank you</p>
+  <h1>Thank you.</h1>
+  <div class="meta-row">
+    <a class="pill" href="https://github.com/SonjaSN/pm-final-project" target="_blank" rel="noopener">Repo · github.com/SonjaSN/pm-final-project</a>
+    <span class="pill cy">Sonja Cohort 1 October 2026</span>
+  </div>
+  <span class="cta-pill"><i></i>Submit to the learning platform</span>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var secs=[].slice.call(document.querySelectorAll('main section'));
+  var dots=[].slice.call(document.querySelectorAll('#dots button'));
+  var bar=document.getElementById('bar');
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function cur(){
+    var y=window.scrollY+window.innerHeight*0.4,i=0;
+    secs.forEach(function(s,k){if(s.offsetTop<=y)i=k;});
+    return i;
+  }
+  function go(i){
+    i=Math.max(0,Math.min(secs.length-1,i));
+    secs[i].scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+  }
+  function update(){
+    var max=document.documentElement.scrollHeight-window.innerHeight;
+    bar.style.width=(max>0?(window.scrollY/max*100):0)+'%';
+    var c=cur();
+    dots.forEach(function(d,k){d.setAttribute('aria-current',k===c?'true':'false');});
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  dots.forEach(function(d,k){d.addEventListener('click',function(){go(k);});});
+  document.addEventListener('keydown',function(e){
+    if(e.altKey||e.ctrlKey||e.metaKey)return;
+    var t=e.target,tag=t&&t.tagName;
+    if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return;
+    if((e.key===' '||e.key==='Spacebar')&&(tag==='A'||tag==='BUTTON'))return;
+    switch(e.key){
+      case 'ArrowDown':case 'PageDown':e.preventDefault();go(cur()+1);break;
+      case 'ArrowUp':case 'PageUp':e.preventDefault();go(cur()-1);break;
+      case ' ':case 'Spacebar':e.preventDefault();go(cur()+(e.shiftKey?-1:1));break;
+      case 'Home':e.preventDefault();go(0);break;
+      case 'End':e.preventDefault();go(secs.length-1);break;
+      case 'Escape':go(0);break;
+    }
+  });
+  update();
+})();
+</script>
+</body>
+</html>
